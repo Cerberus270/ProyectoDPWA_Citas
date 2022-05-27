@@ -1,0 +1,48 @@
+﻿@model ProyectoDPWA_Citas.Models.CIta
+
+@{
+    ViewData["Title"] = "Crear Citas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Crear Cita</h1>
+
+<hr />
+<h4>Datos Citas</h4>
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="IdPaciente" class="control-label"></label>
+                <select asp-for="IdPaciente" class="form-control" asp-items="ViewBag.IdPaciente"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Fecha" class="control-label"></label>
+                <input asp-for="Fecha" type="date" class="form-control" />
+                <span asp-validation-for="Fecha" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Hora" class="control-label"></label>
+                <input asp-for="Hora" class="form-control" />
+                <span asp-validation-for="Hora" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Estado" class="control-label"></label>
+                <select asp-for="Estado" class="form-control" required>
+                    <option value="-1" disabled selected>Seleccione</option>
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Confirmada">Confirmada</option>
+                </select>
+                <span asp-validation-for="Estado" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Guardar Cita" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index"><i class="bi bi-chevron-left"></i> Regresar a la lista</a>
+</div>

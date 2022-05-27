@@ -42,6 +42,7 @@ namespace ProyectoDPWA_Citas.Models
         [StringLength(15)]
         public string Estado { get; set; }
 
+        [Display(Name = "Paciente")]
         [ForeignKey(nameof(IdPaciente))]
         [InverseProperty(nameof(Paciente.Cita))]
         public virtual Paciente IdPacienteNavigation { get; set; }

@@ -19,7 +19,7 @@
                 }
                 @if (User.IsInRole("secretaria"))
                 {
-                    <a class="navbar-brand" asp-area="" asp-controller="Cita" asp-action="Index">Clinica XYZ</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Citas" asp-action="Index">Clinica XYZ</a>
                 }
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -30,10 +30,16 @@
                         @if (User.IsInRole("secretaria"))
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Cita" asp-action="Index">Administracion Citas</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Citas" asp-action="Index">Administracion Citas</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Paciente" asp-action="Index">Administracion Pacientes</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("doctor"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Doctor" asp-action="Index">Administracion Citas</a>
                             </li>
                         }
                     </ul>

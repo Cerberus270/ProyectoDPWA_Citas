@@ -1,0 +1,67 @@
+﻿@model IEnumerable<ProyectoDPWA_Citas.Models.CIta>
+
+@{
+    ViewData["Title"] = "Menu Citas";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Citas del dia de hoy</h1>
+
+@*<p>
+    <a asp-action="Create" class="btn btn-success"><i class="bi bi-file-plus"></i> Crear nueva Cita</a>
+</p>*@
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Fecha)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Hora)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Estado)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.IdPacienteNavigation)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                var fecCita = item.Fecha.ToShortDateString();
+                // Converts the timespan format, thats include Hour, minutes and seconds to a standar format
+                var horaCita = item.Hora.ToString(@"hh\:mm");
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => fecCita)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => horaCita)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Estado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdPacienteNavigation.Nombres)
+                        @Html.DisplayFor(modelItem => item.IdPacienteNavigation.Apellidos)
+                    </td>
+                    <td>
+                        <div class="btn-group">
+                            @if (item.Estado == "Pendiente" || item.Estado == "Confirmada")
+                            {
+
+                                <a asp-action="Iniciar" asp-route-id="@item.IdCita" class="btn btn-sm btn-info"><i class="bi bi-pencil-square"></i> Iniciar Cita</a>
+
+                            }
+                            <a asp-action="Details" asp-route-id="@item.IdCita" class="btn btn-sm btn-primary ml-1"><i class="bi bi-postcard"></i> Detalles</a>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

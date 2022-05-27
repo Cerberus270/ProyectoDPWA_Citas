@@ -1,0 +1,67 @@
+﻿@model ProyectoDPWA_Citas.Models.CIta
+
+@{
+    ViewData["Title"] = "Cancelar Cita";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var fecCita = Model.Fecha.ToShortDateString();
+    var horaCita = Model.Hora.ToString(@"hh\:mm");
+}
+
+<div class="p-3 mb-2 bg-danger text-white">
+    <h2>¿Esta seguro que desea cancelar esta cita?</h2>
+</div>
+@if (Model.Estado.Equals("Cancelada") || Model.Estado.Equals("Finalizada"))
+{
+    <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Error no puedes finalizar una cita ya finalizada o cancelada</h4>
+        <p>Cuando el estado de una cita es Cancelada o Finalizada no puede editarla, si esta viendo esta pagina contacte al administrador</p>
+    </div>
+    
+        <a asp-action="Index" class=""><i class="bi bi-chevron-left"></i> Regresar a la lista</a>
+}
+else
+{
+
+    <div>
+        <h4>Detalles de Cita Cod. @Model.IdCita</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.IdCita)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.IdCita)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Fecha)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => fecCita)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Hora)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => horaCita)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.Estado)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.Estado)
+            </dd>
+            <dt class="col-sm-4">
+                @Html.DisplayNameFor(model => model.IdPacienteNavigation)
+            </dt>
+            <dd class="col-sm-8">
+                @Html.DisplayFor(model => model.IdPacienteNavigation.Apellidos)
+            </dd>
+        </dl>
+
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="IdCita" />
+            <input type="submit" value="Cancelar Cita" class="btn btn-danger" /> |
+            <a asp-action="Index" class=""><i class="bi bi-chevron-left"></i> Regresar a la lista</a>
+        </form>
+    </div>
+}
