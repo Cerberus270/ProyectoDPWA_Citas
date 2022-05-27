@@ -14,10 +14,17 @@
     <link rel="stylesheet" href="~/css/404.css" />
 </head>
 <body>
-    <div class="bg">
+    <div class="container-fluid">
+        <div class="d-flex justify-content-md-center align-items-center vh-100">
+            <div style="background-color: rgba(81, 81, 81, 0.5)">
+                <h1 class="text-white text-center number-error">404</h1>
+                <p class="text-white text-center">No hay nada aquí</p>
+                <p class="text-white text-center text">La página que buscas no existe, o quizás tu no existes ಠ_ಠ</p>
+                <div class="d-flex justify-content-md-center align-items-center">
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-sm btn-primary"><i class="bi bi-chevron-left"></i> Llevame a la pagina principal</a>
 
-        <div class="mx-auto" style="width: 200px;">
-            Centered element
+                </div>
+            </div>
         </div>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
