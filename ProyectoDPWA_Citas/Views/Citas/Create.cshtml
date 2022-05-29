@@ -24,7 +24,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Hora" class="control-label"></label>
-                <input asp-for="Hora" class="form-control" />
+                <input asp-for="Hora" type="time" class="form-control" />
                 <span asp-validation-for="Hora" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -46,3 +46,34 @@
 <div>
     <a asp-action="Index"><i class="bi bi-chevron-left"></i> Regresar a la lista</a>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+
+        window.onload = function () {
+            init();
+        };
+
+        function init() {
+            let fecha = document.querySelector('#Fecha');
+            fecha.min = new Date().toLocaleDateString('en-ca');
+        }
+
+        function calcularEdad(e) {
+            let hoy = new Date()
+            let inputDate = document.querySelector("#Edad");
+            let fechaNacimiento = new Date(e.target.value)
+            let edad = hoy.getFullYear() - fechaNacimiento.getFullYear()
+            let diferenciaMeses = hoy.getMonth() - fechaNacimiento.getMonth()
+            if (
+                diferenciaMeses < 0 ||
+                (diferenciaMeses === 0 && hoy.getDate() < fechaNacimiento.getDate())
+            ) {
+                edad--
+            }
+            inputDate.value = edad;
+        }
+
+    </script>
+}

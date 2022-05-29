@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoDPWA_Citas.Controllers
 {
-    public class ErrorController : Controller
+    public class ErroresController : Controller
     {
         public IActionResult Http(int statusCode)
         {  

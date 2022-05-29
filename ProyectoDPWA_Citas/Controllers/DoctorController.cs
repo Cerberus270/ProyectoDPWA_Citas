@@ -20,7 +20,7 @@ namespace ProyectoDPWA_Citas.Controllers
         // GET: CItas
         public async Task<IActionResult> Index()
         {
-            var clinicaModContext = _context.Cita.Include(c => c.IdPacienteNavigation);
+            var clinicaModContext = _context.Cita.Where(c => c.Estado.Equals("Confirmada")).Include(c => c.IdPacienteNavigation);
             return View(await clinicaModContext.ToListAsync());
         }
 

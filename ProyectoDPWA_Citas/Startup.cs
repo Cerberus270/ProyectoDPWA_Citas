@@ -55,7 +55,7 @@ namespace ProyectoDPWA_Citas
                 app.UseHsts();
             }
 
-            app.UseStatusCodePagesWithRedirects("/Error/Http?statusCode={0}");
+            app.UseStatusCodePagesWithRedirects("/Errores/Http?statusCode={0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
