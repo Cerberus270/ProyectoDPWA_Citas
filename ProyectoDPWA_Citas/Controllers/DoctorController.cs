@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ProyectoDPWA_Citas.Controllers
 {
-    public class DoctorController : Controller
+    public partial class DoctorController : Controller
     {
         private readonly ClinicaModContext _context;
 

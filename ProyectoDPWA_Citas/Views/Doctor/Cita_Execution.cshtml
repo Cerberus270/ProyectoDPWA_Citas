@@ -1,0 +1,274 @@
+﻿@model ProyectoDPWA_Citas.Models.ViewModels.Cita_Execution
+
+@{
+    ViewData["Title"] = "Cita_Execution";
+    Layout = "_Layout2";
+}
+
+
+@section Styles{
+
+}
+<h4>Atendiendo cita del paciente @(Model.cita.IdPacienteNavigation.Nombres + " " + Model.cita.IdPacienteNavigation.Apellidos)</h4>
+<hr />
+
+<!-- #region mostar los datos de la cita -->
+<div class="row">
+    @Html.LabelFor(m => m.cita.IdCita, "Cod. Cita", new { @class = "col-sm-2 col-form-label" })
+    <div class="col-sm-10">
+        <p class="fw-bold col-form-label">@Model.cita.IdCita</p>
+    </div>
+</div>
+<div class="row">
+    @Html.LabelFor(m => m.cita.Fecha, "Fecha:", new { @class = "col-sm-2 col-form-label" })
+    <div class="col-sm-10">
+        <p class="fw-bold col-form-label">@Model.cita.FechaShort</p>
+    </div>
+</div>
+<div class="row">
+    @Html.LabelFor(m => m.cita.Fecha, "Hora:", new { @class = "col-sm-2 col-form-label" })
+    <div class="col-sm-10">
+        <p class="fw-bold col-form-label">@Model.cita.HoraShort</p>
+    </div>
+</div>
+<div class="row">
+    @Html.LabelFor(m => m.cita.IdPacienteNavigation.Nombres, "Nombre paciente", new { @class = "col-sm-2 col-form-label" })
+    <div class="col-sm-10">
+        <p class="fw-bold col-form-label">
+            @(Model.cita.IdPacienteNavigation.Nombres+" "+Model.cita.IdPacienteNavigation.Apellidos)
+        </p>
+    </div>
+</div>
+<div class="row">
+    @Html.LabelFor(m => m.cita.Estado, "Estado Cita:", new { @class = "col-sm-2 col-form-label" })
+    <div class="col-sm-10">
+        <p class="fw-bold col-form-label">
+            @Model.cita.Estado
+        </p>
+    </div>
+</div>
+<!-- #endregion //Mostrar los datos de la cita -->
+
+<!-- #region formulario del diagnostico-->
+<h4>Datos del diagnostico</h4>
+<hr />
+<form id="frmDiagnostico">
+    <div class="row">
+        @Html.LabelFor(m => Model.cita.DiagnosticoCurrent.IdDiagnostico,
+            "Cod. Diagnostico", new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            <p class="fw-bold col-form-label">@Model.cita.DiagnosticoCurrent.IdDiagnosticoString</p>
+        </div>
+    </div>
+    <div class="row">
+        @Html.LabelFor(m => m.cita.DiagnosticoCurrent.Descripcion,
+            "Descripcion", new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            @Html.TextAreaFor(m => m.cita.DiagnosticoCurrent.Descripcion, new { @class = "form-control" })
+        </div>
+    </div>
+</form>
+<!-- #endregion //formulario de diagnostico-->
+
+<!-- #region formulario de receta -->
+<h4>Datos de la receta</h4>
+<hr />
+<form id="frmReceta">
+    <div class="row">
+        @Html.LabelFor(m => Model.cita.DiagnosticoCurrent.RecetaCurrent.IdReceta,
+            "Cod. Receta", new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            <p class="fw-bold col-form-label">@Model.cita.DiagnosticoCurrent.RecetaCurrent.IdReceta</p>
+        </div>
+    </div>
+    <div class="row">
+        @Html.LabelFor(m => m.receta.FechaPrescripcion,
+            "Fecha Prescripcion", new { @class = "col-sm-2 col-form-label" })
+        <div class="col-sm-10">
+            <p class="fw-bold col-form-label">
+                @{ 
+                    String fechaPrescripcion;
+                    if (Model.receta.FechaPrescripcion == DateTime.MinValue)
+                    {
+                        fechaPrescripcion = DateTime.Now.ToShortDateString();
+                    }
+                    else
+                    {
+                        fechaPrescripcion = Model.receta.FechaPrescripcion.ToShortDateString();
+                    }
+                }
+                @fechaPrescripcion
+            </p>
+        </div>
+    </div>
+</form>
+<!-- #endregion //formulario de receta -->
+
+<!-- #region DETALLES DE RECETA-->
+<!-- Boton para mostar el modal de detalles de la receta -->
+<button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#modalDetallesReceta">
+    Launch demo modal
+</button>
+
+<!-- modal para ingresar el diagnostico -->
+<div class="modal fade" id="modalDetallesReceta" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <h3>Detalles de la receta<</h3>
+                <form>
+                    <div class="row">
+                        <label for="txtRecetaDetalleMedicamento"
+                               class="col-sm-2 col-form-label">
+                            Medicamento
+                        </label>
+                        <div class="col-sm-10">
+                            <input type="text" id="txtRecetaDetalleMedicamento"
+                                      class="form-control"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <label for="txaRecetaDetalleIndicaciones"
+                               class="col-sm-2 col-form-label">
+                            Indicaciones
+                        </label>
+                        <div class="col-sm-10">
+                            <textarea id="txaRecetaDetalleIndicaciones"
+                                      class="form-control">
+                            </textarea>
+                        </div>
+                    </div>
+                    <hr />
+                    <button type="button"
+                            class="btn-outline-primary"
+                            id="btnDetallesRecetaAnnadir">
+                        Añadir detalle a la receta
+                    </button>
+                </form>
+                <div class="table-responsive">
+                    <table class="table"
+                           id="tblDetallesReceta">
+                       
+                        <thead>
+                            <tr>
+                                <th>Medicamento</th>
+                                <th>Indicaciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- #endregion //DETALLES DE RECETA-->
+
+<br />
+<button type="button" class="btn btn-outline-primary my-3"
+        id="btnGuardarTodo">
+    Completar cita
+</button>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+<script>
+        var detallesReceta = new Array();
+        $(document).ready(() => {
+            //#region annadir el detalle temporalmente
+            $("#btnDetallesRecetaAnnadir").click(() => {
+                let dr = {
+                    medicamento: $("#txtRecetaDetalleMedicamento").val(),
+                    indicaciones: $("#txaRecetaDetalleIndicaciones").val()
+                }
+
+                let index = detallesReceta.findIndex((element) => {
+                    return element.medicamento == dr.medicamento
+                });
+
+                if (index > -1) {
+                    detallesReceta[index] = dr;
+                } else {
+                    detallesReceta.push(dr);
+                }
+
+                //recrear tabla
+                let tableHtml = "";
+
+                detallesReceta.forEach((element) => {
+                    tableHtml += `
+                        <tr>
+                            <td>${element.medicamento}</td>
+                            <td>${element.indicaciones}</td>
+                        </tr>
+                    `;
+                });
+
+                $("#tblDetallesReceta").find("tbody").html(tableHtml);
+            });
+            //#endregion
+
+            //#region guardar todos los cambios
+            $("#btnGuardarTodo").click(() => {
+                let frmDiagnosticoSerialized = $("#frmDiagnostico").serializeArray()[0];
+                let frmRecetaSerialized = $("#frmReceta").serialize()[0];
+
+                diagnostico = {
+                    Descripcion: frmDiagnosticoSerialized.value,
+                }
+
+                let dataToSend = {
+                    cita: { IdCita: @Model.cita.IdCita },
+                    diagnostico: diagnostico,
+                    receta: frmRecetaSerialized,
+                    detallesReceta: detallesReceta
+                }
+                
+                //dataToSend = JSON.stringify(dataToSend);
+                console.info("dataToSend: ");
+                console.info(dataToSend);
+
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("Cita_Execution_Save")",
+                    data: dataToSend
+                }).done(function (msg) {
+                    console.info("Respuesta done: " + msg);
+                    if (msg == "Exito") {
+                        Swal.fire(
+                            'Completado',
+                            msg,
+                            'success'
+                        )
+                    } else {
+                        Swal.fire(
+                            'Error',
+                            msg,
+                            'error'
+                        )
+                    }
+                }).fail(function (jqXHR, textStatus) {
+                    Swal.fire(
+                        'Completado',
+                        msg,
+                        'error'
+                    )
+                });
+            });
+            //#endregion
+        });
+</script>
+}
