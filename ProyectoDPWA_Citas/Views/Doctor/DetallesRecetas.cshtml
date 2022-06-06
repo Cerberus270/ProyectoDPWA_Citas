@@ -1,0 +1,46 @@
+﻿@model IEnumerable<ProyectoDPWA_Citas.Models.DetallesReceta>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<h6>Medicinas de Receta @(TempData["idReceta"] as string)</h6>
+<hr />
+<div class="table-responsive">
+    <table id="tablaCitas" class="table table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>
+                    Cod. Receta
+                </th>
+                <th>
+                    Cod. Medicamento
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Medicamento)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Indicaciones)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdReceta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IdDetalleReceta)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Medicamento)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Indicaciones)
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

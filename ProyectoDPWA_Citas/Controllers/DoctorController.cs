@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProyectoDPWA_Citas.Data;
+using ProyectoDPWA_Citas.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +21,60 @@ namespace ProyectoDPWA_Citas.Controllers
         // GET: CItas
         public async Task<IActionResult> Index()
         {
-            var clinicaModContext = _context.Cita.Where(c => c.Estado.Equals("Confirmada")).Include(c => c.IdPacienteNavigation);
+            var clinicaModContext = _context.Cita.Where(c => c.Estado.Equals("Confirmada") || c.Estado.Equals("Finalizada")).Include(c => c.IdPacienteNavigation);
             return View(await clinicaModContext.ToListAsync());
+        }
+
+        public async Task<IActionResult> Expediente(int? id)
+        {
+            ViewModelDiagnosticoRecetaCita viewModel = new ViewModelDiagnosticoRecetaCita();
+            var pac = await _context.Pacientes
+                .FirstOrDefaultAsync(m => m.IdPaciente == id);
+            //var diagnosticos = _context.Diagnosticos.Where(c => c.IdCitaNavigation.IdPaciente == id).ToListAsync();
+            /*
+             * select C.idCita, P.nombres, P.apellidos, D.idDiagnostico, D.descripcion, R.idReceta, R.fechaPrescripcion from Receta R
+               INNER JOIN Diagnostico D on R.idDiagnostico = D.idDiagnostico
+               INNER JOIN Cita C on D.idCita = C.idCita
+               INNER JOIN Paciente P on C.idPaciente = P.idPaciente
+               where C.idPaciente = 1;
+            */
+            //var diagnosticos = (from r in _context.Receta
+            //                    join d in _context.Diagnosticos on r.IdDiagnostico equals d.IdDiagnostico
+            //                    join c in _context.Cita on d.IdCita equals c.IdCita
+            //                    where c.IdPaciente == id
+            //                    select d);
+
+            var diagnosticos = (from d in _context.Diagnosticos
+                                join c in _context.Cita on d.IdCita equals c.IdCita
+                                join p in _context.Pacientes on c.IdPaciente equals p.IdPaciente
+                                where c.IdPaciente == id
+                                select d).ToList();
+            var recetas = (from r in _context.Receta
+                                join d in _context.Diagnosticos on r.IdDiagnostico equals d.IdDiagnostico
+                                join c in _context.Cita on d.IdCita equals c.IdCita
+                                join p in _context.Pacientes on c.IdPaciente equals p.IdPaciente
+                                where c.IdPaciente == id
+                                select r).ToList();
+            List<ViewModelDiagnosticoReceta> listaDiagnosticos = new List<ViewModelDiagnosticoReceta>();
+            for(int i = 0; i < diagnosticos.Count; i++)
+            {
+                ViewModelDiagnosticoReceta modelDiagnosticoReceta = new ViewModelDiagnosticoReceta();
+                modelDiagnosticoReceta.diagnostico = diagnosticos[i];
+                modelDiagnosticoReceta.receta = recetas[i];
+                listaDiagnosticos.Add(modelDiagnosticoReceta);
+            }
+            viewModel.Paciente = pac;
+            viewModel.modelDiagnosticoRecetas = listaDiagnosticos;
+            //viewModel.diagnosticos = await diagnosticos.ToListAsync();
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        public IActionResult DetallesRecetas(string idReceta)
+        {
+            var detallesRecetas = _context.DetallesReceta.Where(c => c.IdReceta.Equals(int.Parse(idReceta)));
+            TempData["idReceta"] = idReceta;
+            return PartialView("DetallesRecetas", detallesRecetas.ToList());
         }
 
         public async Task<IActionResult> Finalizar(int? id)

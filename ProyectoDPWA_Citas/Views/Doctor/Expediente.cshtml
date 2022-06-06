@@ -1,0 +1,126 @@
+﻿@model ProyectoDPWA_Citas.Models.ViewModelDiagnosticoRecetaCita
+@{
+    ViewData["Title"] = "Expediente";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Expediente Paciente @Model.Paciente.Nombres @Model.Paciente.Apellidos</h1>
+<hr />
+<div>
+    <a asp-action="Index" class="btn btn-outline-secondary"><i class="bi bi-chevron-left"></i> Regresar a la Citas</a>
+</div>
+<h4>Diagnosticos</h4>
+
+@{if (Model.modelDiagnosticoRecetas.Count() >= 1)
+    {
+        <div class="table-responsive">
+            <table id="tablaRecetas" class="table table-hover " style="width:100%">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>
+                            Cod. Citas
+                        </th>
+                        <th>
+                            Cod. Diagnóstico
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.diagnostico.Descripcion)
+                        </th>
+                        <th>
+                            Cod. Recetas
+                        </th>
+                        <th>
+                            Fecha Prescripción
+                        </th>
+                        <th>
+                            Acciones
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.modelDiagnosticoRecetas)
+                    {
+                        var fecCita = item.receta.FechaPrescripcion.ToShortDateString();
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.diagnostico.IdCita)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.diagnostico.IdDiagnostico)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.diagnostico.Descripcion)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.receta.IdReceta)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => fecCita)
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-detalles" data-id="@item.receta.IdReceta" data-toggle="modal" data-target="#detallesRecetas">
+                                    <i class="bi bi-clipboard2-pulse"></i>
+                                </button>
+                                <button type="button" class="btn btn-primary">
+                                    <i class="bi bi-printer"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Modal Detalles Recetas -->
+        <div class="modal fade" id="detallesRecetas" tabindex="-1" role="dialog" aria-labelledby="detallesRecetasLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detallesRecetasLabel">Detalles Receta</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="partial">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                        <button type="button" class="btn btn-primary">Guardar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @section Scripts{
+            <script type="text/javascript">
+                $(function () {
+                    $('.btn-detalles').click(function () {
+                        var id = $(this).data('id');
+                         $.ajax({
+                            type: "POST",
+                             url: "/Doctor/DetallesRecetas",
+                             data: { "idReceta": id },
+                             success: function (response) {
+                                 $('#partial').html(response);
+                            },
+                            failure: function (response) {
+                                alert(response.responseText);
+                            },
+                            error: function (response) {
+                                alert(response.responseText);
+                            }
+                        });
+                    });
+
+                });
+            </script>
+         }
+    }
+    else
+    {
+        <div class="p-3 mb-2 bg-info text-white">
+            <h2>El paciente no cuenta con expedientes almacenados</h2>
+        </div>
+    }
+}
