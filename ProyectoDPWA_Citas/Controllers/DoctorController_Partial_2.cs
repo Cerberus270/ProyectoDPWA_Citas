@@ -17,6 +17,10 @@ namespace ProyectoDPWA_Citas.Controllers
         {
             Cita_Execution viewmodel = new Cita_Execution();
             CIta cita = await _context.Cita.Where(c=> c.IdCita == citaId).FirstOrDefaultAsync();
+            if (cita.Estado.Equals("Completada"))
+            {
+                return NotFound();
+            }
 
             //este codigo no es necesario aca
             /*IEnumerable<SelectListItem> estadosCita = new List<SelectListItem>() {
@@ -38,16 +42,28 @@ namespace ProyectoDPWA_Citas.Controllers
         {
             string retorno;
 
+            if(citaExecution == null
+                || citaExecution.cita == null
+                || citaExecution.cita.IdCita < 0)
+            {
+                retorno = "No es posible guardar los cambios";
+                return new JsonResult(retorno);
+            }
+
             try
             {
                 await _context.Database.BeginTransactionAsync();
 
                 citaExecution.diagnostico.IdCita = citaExecution.cita.IdCita;
+                citaExecution.cita = await _context.Cita.Include(c => c.IdPacienteNavigation)
+                    .Where(c => c.IdCita == citaExecution.cita.IdCita).FirstOrDefaultAsync();
+                citaExecution.cita.Estado = "Completada";
                 _context.Add(citaExecution.diagnostico);
                 await _context.SaveChangesAsync();
 
                 Receta receta = new Receta();
                 receta.IdDiagnostico = citaExecution.diagnostico.IdDiagnostico;
+                receta.FechaPrescripcion = DateTime.Now;
                 _context.Add(receta);
                 await _context.SaveChangesAsync();
 
