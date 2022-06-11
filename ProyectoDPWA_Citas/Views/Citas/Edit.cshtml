@@ -25,7 +25,7 @@ else
                 <input type="hidden" asp-for="IdCita" />
                 <div class="form-group">
                     <label asp-for="IdPaciente" class="control-label"></label>
-                    <select asp-for="IdPaciente" class="form-control" asp-items="ViewBag.IdPaciente"></select>
+                    <select asp-for="IdPaciente" class="form-control" asp-items="ViewBag.nombres"></select>
                     <span asp-validation-for="IdPaciente" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -35,7 +35,7 @@ else
                 </div>
                 <div class="form-group">
                     <label asp-for="Hora" class="control-label"></label>
-                    <input asp-for="Hora" class="form-control" />
+                    <input asp-for="Hora" type="time" class="form-control" />
                     <span asp-validation-for="Hora" class="text-danger"></span>
                 </div>
                 <div class="form-group">
