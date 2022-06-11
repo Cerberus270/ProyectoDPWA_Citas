@@ -44,7 +44,7 @@
         <tbody>
             @foreach (var item in Model)
             {
-                var fecCita = item.Fecha.ToShortDateString();
+                var fecCita = item.Fecha.ToString("dd/MM/yyyy");
                 // Converts the timespan format, thats include Hour, minutes and seconds to a standar format
                 var horaCita = item.Hora.ToString(@"hh\:mm");
             <tr>

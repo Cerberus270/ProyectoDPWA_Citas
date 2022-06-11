@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using ProyectoDPWA_Citas.Data;
 using ProyectoDPWA_Citas.Models;
@@ -9,7 +10,8 @@ using System.Threading.Tasks;
 
 namespace ProyectoDPWA_Citas.Controllers
 {
-    public partial class DoctorController : Controller
+    [Authorize(Roles = "doctor")]
+    public class DoctorController : Controller
     {
         private readonly ClinicaModContext _context;
 

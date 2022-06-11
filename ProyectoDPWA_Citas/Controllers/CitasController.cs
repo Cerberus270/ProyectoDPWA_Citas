@@ -11,6 +11,7 @@ using ProyectoDPWA_Citas.Models;
 
 namespace ProyectoDPWA_Citas.Controllers
 {
+    [Authorize(Roles = "secretaria")]
     public class CitasController : Controller
     {
         private readonly ClinicaModContext _context;
@@ -27,6 +28,7 @@ namespace ProyectoDPWA_Citas.Controllers
             return View(await clinicaModContext.ToListAsync());
         }
 
+        
         // GET: CItas/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -49,7 +51,10 @@ namespace ProyectoDPWA_Citas.Controllers
         // GET: CItas/Create
         public IActionResult Create()
         {
+            List<SelectListItem> nombresCompletos = RetornarNombreCompleto();
+            ViewData["nombres"] = nombresCompletos;
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "Apellidos");
+
             return View();
         }
 
@@ -83,6 +88,8 @@ namespace ProyectoDPWA_Citas.Controllers
             {
                 return NotFound();
             }
+            List<SelectListItem> nombresCompletos = RetornarNombreCompleto();
+            ViewData["nombres"] = nombresCompletos;
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "Apellidos", cIta.IdPaciente);
             return View(cIta);
         }
@@ -186,6 +193,25 @@ namespace ProyectoDPWA_Citas.Controllers
         private bool CItaExists(int id)
         {
             return _context.Cita.Any(e => e.IdCita == id);
+        }
+
+        private List<SelectListItem> RetornarNombreCompleto()
+        {
+
+            List<SelectListItem> items = new List<SelectListItem>();
+            //Loop and add the Parent Nodes.
+   
+                //Loop and add the Items.
+                foreach (Paciente subType in _context.Pacientes)
+                {
+                    string fullName = subType.Nombres + " " + subType.Apellidos;
+                    items.Add(new SelectListItem
+                    {
+                        Value = subType.IdPaciente.ToString(),
+                        Text = fullName,
+                    });
+                }
+            return items;
         }
     }
 }
