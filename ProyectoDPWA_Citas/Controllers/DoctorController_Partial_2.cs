@@ -59,28 +59,29 @@ namespace ProyectoDPWA_Citas.Controllers
             {
                 await _context.Database.BeginTransactionAsync();
 
-                citaExecution.diagnostico.IdCita = citaExecution.cita.IdCita;
-                citaExecution.cita = await _context.Cita.Include(c => c.IdPacienteNavigation)
+                CIta workingCita = await _context.Cita
                     .Where(c => c.IdCita == citaExecution.cita.IdCita).FirstOrDefaultAsync();
-                if (!isCitaEjecutada(citaExecution.cita))
+                if (!isCitaEjecutada(workingCita))
                 {
                     return NotFound();
                 }
-                citaExecution.cita.Estado = "Completada";
-                _context.Add(citaExecution.diagnostico);
+
+                workingCita.Diagnosticos.Add(citaExecution.diagnostico);
+                //_context.Add(citaExecution.diagnostico);
                 await _context.SaveChangesAsync();
 
-                Receta receta = new Receta();
-                receta.IdDiagnostico = citaExecution.diagnostico.IdDiagnostico;
-                receta.FechaPrescripcion = DateTime.Now;
-                _context.Add(receta);
-                await _context.SaveChangesAsync();
+                //Receta workingReceta = new Receta();
+                Receta workingReceta = workingCita.DiagnosticoCurrent.RecetaCurrent;
+                
+                //workingReceta.IdDiagnosticoNavigation = citaExecution.cita.DiagnosticoCurrent;
+                workingReceta.FechaPrescripcion = DateTime.Now;
 
                 foreach (DetallesReceta dr in citaExecution.detallesReceta)
                 {
-                    dr.IdReceta = receta.IdReceta;
-                    _context.Add(dr);
+                    workingReceta.DetallesReceta.Add(dr);
+                    //_context.Add(dr);
                 }
+                workingCita.Estado = "Completada";
                 await _context.SaveChangesAsync();
 
                 await _context.Database.CommitTransactionAsync();
