@@ -191,169 +191,205 @@
 @section Scripts {
     @{/*await Html.RenderPartialAsync("_ValidationScriptsPartial");*/}
 <script>
-        var detallesReceta = new Array();
-        $(document).ready(() => {
-            //#region annadir el detalle temporalmente
-            $("#btnDetallesRecetaAnnadir").click(() => {
-                //#region VALIDAR FORMULARIO frmDetalleReceta
-                let frmDetalleReceta = $("#frmDetalleReceta");
-                frmDetalleReceta.validate({
-                    errorClass: "text-danger",
-                    invalidHandler: function (event, validator) {
-                        var errors = validator.numberOfInvalids();
-                        if (errors) {
-                            var message = errors == 1
-                                ? 'Un campo no es válido'
-                                : errors + ' campos no son validos.';
-                            $("div.text-danger span").html(message);
-                            $("div.text-danger").show();
-                        } else {
-                            $("div.text-danger").hide();
-                        }
-                    },
-                    rules: {
-                        txtRecetaDetalleMedicamento: {
-                            required: true,
-                            minlength: 5
-                        },
-                        txaRecetaDetalleIndicaciones: {
-                            required: true,
-                            minlength: 5
-                        }
-                    },
-                    messages: {
-                        txtRecetaDetalleMedicamento: "Escriba un medicamento válido",
-                        txaRecetaDetalleIndicaciones: "Escriba una indicación válida"
-                    }
-                });
-                //#endregion
+    var detallesReceta = new Array();
 
-                //annadir el detalle a la tabla
-                console.info("frmDetalleReceta es valido?: "+frmDetalleReceta.valid());
-                if (frmDetalleReceta.valid()) {
-                    frmDetalleReceta.find("div.text-danger").hide();
-                    let dr = {
-                        medicamento: $("#txtRecetaDetalleMedicamento").val(),
-                        indicaciones: $("#txaRecetaDetalleIndicaciones").val()
-                    }
+    //#region FUNCONES DE UTILIDAD PARA frmDetalleReceta
+    function generarTabla() {
+        let tableHtml = "";
 
-                    let index = detallesReceta.findIndex((element) => {
-                        return element.medicamento == dr.medicamento
-                    });
-
-                    if (index > -1) {
-                        detallesReceta[index] = dr;
-                    } else {
-                        detallesReceta.push(dr);
-                    }
-
-                    //recrear tabla
-                    let tableHtml = "";
-
-                    detallesReceta.forEach((element) => {
-                        tableHtml += `
+        detallesReceta.forEach((element) => {
+            tableHtml += `
                         <tr>
                             <td>${element.medicamento}</td>
                             <td>${element.indicaciones}</td>
+                            <td>
+                                <button type="button"
+                                    class="btn btn-outline-danger"
+                                    onClick="eliminarDetalleRecetaFrmDetalleReceta('${element.medicamento}')"/>
+                            </td>
                         </tr>
                     `;
-                    });
+        });
 
-                    $("#tblDetallesReceta").find("tbody").html(tableHtml);
+        $("#tblDetallesReceta").find("tbody").html(tableHtml);
+    }
+
+    function limpiarFrmDetalleReceta() {
+        $("#txtRecetaDetalleMedicamento").prop('value','');
+        $("#txaRecetaDetalleIndicaciones").prop('value', '');
+    }
+    //#endregion FUNCONES DE UTILIDAD PARA frmDetalleReceta
+
+    //#region funcion para eliminar un detalle receta temporal
+    function eliminarDetalleRecetaFrmDetalleReceta(medicamento) {
+        let index = detallesReceta.findIndex((element) => {
+            return element.medicamento == medicamento;
+        });
+
+        if (index > -1) {
+            detallesReceta.splice(index, 1);
+        }
+
+        generarTabla();
+    }
+    //#endregion funcion para eliminar un detalle receta temporal
+
+    $(document).ready(() => {
+        //#region annadir el detalle temporalmente
+        $("#btnDetallesRecetaAnnadir").click(() => {
+            //#region VALIDAR FORMULARIO frmDetalleReceta
+            let frmDetalleReceta = $("#frmDetalleReceta");
+            frmDetalleReceta.validate({
+                errorClass: "text-danger",
+                invalidHandler: function (event, validator) {
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        var message = errors == 1
+                            ? 'Un campo no es válido'
+                            : errors + ' campos no son validos.';
+                        $("div.text-danger span").html(message);
+                        $("div.text-danger").show();
+                    } else {
+                        $("div.text-danger").hide();
+                    }
+                },
+                rules: {
+                    txtRecetaDetalleMedicamento: {
+                        required: true,
+                        minlength: 5
+                    },
+                    txaRecetaDetalleIndicaciones: {
+                        required: true,
+                        minlength: 5
+                    }
+                },
+                messages: {
+                    txtRecetaDetalleMedicamento: "Escriba un medicamento válido",
+                    txaRecetaDetalleIndicaciones: "Escriba una indicación válida"
                 }
             });
             //#endregion
 
-            //#region guardar todos los cambios
-            $("#btnGuardarTodo").click(() => {    
-                //#region VALIDAR FORMULARIO frmDiagnostico
-                let frmDiagnostico = $("#frmDiagnostico");
+            //annadir el detalle a la tabla
+            console.info("frmDetalleReceta es valido?: "+frmDetalleReceta.valid());
+            if (frmDetalleReceta.valid()) {
+                frmDetalleReceta.find("div.text-danger").hide();
+                let dr = {
+                    medicamento: $("#txtRecetaDetalleMedicamento").val(),
+                    indicaciones: $("#txaRecetaDetalleIndicaciones").val()
+                }
 
-                frmDiagnostico.validate({
-                    errorClass: "text-danger",
-                    invalidHandler: function (event, validator) {
-                        var errors = validator.numberOfInvalids();
-                        if (errors) {
-                            var message = errors == 1
-                                ? 'Un campo no es válido'
-                                : errors + ' campos no son validos.';
-                            $("div.error span").html(message);
-                            $("div.error").show();
-                        } else {
-                            $("div.error").hide();
-                        }
-                    },
-                    rules: {
-                        txaDiagnosticoDescripcion: {
-                            required: true,
-                            minlength: 5
-                        }
-                    },
-                    messages: {
-                        txaDiagnosticoDescripcion: "Ingrese una descripción de diagnostico"
-                    }
+                let index = detallesReceta.findIndex((element) => {
+                    return element.medicamento == dr.medicamento
                 });
-                //#endregion VALIDAR FORMULARIO frmDiagnostico
 
-                console.info("frmDiagnostico es valido? " + frmDiagnostico.valid());
-                if (frmDiagnostico.valid()) {
-                    frmDiagnostico.find("div.text-danger").hide();
-                    //determinar si hay detalles de receta
-                    if (detallesReceta.length == 0) {
-                        Swal.fire(
-                            'Error',
-                            'Debe incluir al menos 1 detalle para la receta',
-                            'error'
-                        )
-                        return;
+                if (index > -1) {
+                    detallesReceta[index] = dr;
+                } else {
+                    detallesReceta.push(dr);
+                }
+
+                //limpiar controles
+                limpiarFrmDetalleReceta();
+
+                //recrear tabla
+                generarTabla();
+            }
+        });
+        //#endregion
+
+        //#region guardar todos los cambios
+        $("#btnGuardarTodo").click(() => {    
+            //#region VALIDAR FORMULARIO frmDiagnostico
+            let frmDiagnostico = $("#frmDiagnostico");
+
+            frmDiagnostico.validate({
+                errorClass: "text-danger",
+                invalidHandler: function (event, validator) {
+                    var errors = validator.numberOfInvalids();
+                    if (errors) {
+                        var message = errors == 1
+                            ? 'Un campo no es válido'
+                            : errors + ' campos no son validos.';
+                        $("div.error span").html(message);
+                        $("div.error").show();
+                    } else {
+                        $("div.error").hide();
                     }
+                },
+                rules: {
+                    txaDiagnosticoDescripcion: {
+                        required: true,
+                        minlength: 5
+                    }
+                },
+                messages: {
+                    txaDiagnosticoDescripcion: "Ingrese una descripción de diagnostico"
+                }
+            });
+            //#endregion VALIDAR FORMULARIO frmDiagnostico
+
+            console.info("frmDiagnostico es valido? " + frmDiagnostico.valid());
+            if (frmDiagnostico.valid()) {
+                frmDiagnostico.find("div.text-danger").hide();
+                //determinar si hay detalles de receta
+                if (detallesReceta.length == 0) {
+                    Swal.fire(
+                        'Error',
+                        'Debe incluir al menos 1 detalle para la receta',
+                        'error'
+                    )
+                    return;
+                }
      
-                    //preparar y enviar los datos
-                    let frmDiagnosticoSerialized = $("#frmDiagnostico").serializeArray()[0];
-                    diagnostico = {
-                        Descripcion: frmDiagnosticoSerialized.value,
-                    }
+                //preparar y enviar los datos
+                let frmDiagnosticoSerialized = $("#frmDiagnostico").serializeArray()[0];
+                diagnostico = {
+                    Descripcion: frmDiagnosticoSerialized.value,
+                }
 
-                    let dataToSend = {
-                        cita: { IdCita: @Model.cita.IdCita },
-                        diagnostico: diagnostico,
-                        receta: undefined,
-                        detallesReceta: detallesReceta
-                    }
+                let dataToSend = {
+                    cita: { IdCita: @Model.cita.IdCita },
+                    diagnostico: diagnostico,
+                    receta: undefined,
+                    detallesReceta: detallesReceta
+                }
 
-                    console.info("dataToSend: ");
-                    console.info(dataToSend);
+                console.info("dataToSend: ");
+                console.info(dataToSend);
 
-                    //enviar el formulario
-                    $.ajax({
-                        method: "POST",
-                        url: "@Url.Action("Cita_Execution_Save")",
-                        data: dataToSend
-                    }).done(function (msg) {
-                        console.info("Respuesta done: " + msg);
-                        if (msg == "Exito") {
-                            Swal.fire(
-                                'Completado',
-                                msg,
-                                'success'
-                            )
-                        } else {
-                            Swal.fire(
-                                'Error',
-                                msg,
-                                'error'
-                            )
-                        }
-                    }).fail(function (jqXHR, textStatus) {
+                //enviar el formulario
+                $.ajax({
+                    method: "POST",
+                    url: "@Url.Action("Cita_Execution_Save")",
+                    data: dataToSend
+                }).done(function (msg) {
+                    console.info("Respuesta done: " + msg);
+                    if (msg == "Exito") {
                         Swal.fire(
                             'Completado',
-                            textStatus,
+                            msg,
+                            'success'
+                        ).then(() => {
+                            window.location.replace(@Url.Action("index"));
+                        });
+                    } else {
+                        Swal.fire(
+                            'Error',
+                            msg,
                             'error'
                         )
-                    });
-                }
-            });
-            //#endregion
+                    }
+                }).fail(function (jqXHR, textStatus) {
+                    Swal.fire(
+                        'Completado',
+                        textStatus,
+                        'error'
+                    )
+                });
+            }
         });
+        //#endregion
+    });
 </script>
 }

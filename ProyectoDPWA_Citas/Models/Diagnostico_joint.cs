@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 #nullable disable
 
@@ -13,6 +14,7 @@ namespace ProyectoDPWA_Citas.Models
     [ModelMetadataType(typeof(Diagnostico_Metadata))]
     public partial class Diagnostico
     {
+        [ValidateNever]
         public String IdDiagnosticoString
         {
             get
@@ -21,6 +23,7 @@ namespace ProyectoDPWA_Citas.Models
             }
         }
 
+        [ValidateNever]
         public Receta RecetaCurrent
         {
             get

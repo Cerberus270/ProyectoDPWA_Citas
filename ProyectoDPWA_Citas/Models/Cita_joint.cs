@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ProyectoDPWA_Citas.Models.Metadata;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 #nullable disable
 
@@ -14,6 +15,7 @@ namespace ProyectoDPWA_Citas.Models
     [MetadataType(typeof(CIta_Metadata))]
     public partial class CIta
     {
+        [ValidateNever]
         public String FechaShort
         {
             get
@@ -22,6 +24,7 @@ namespace ProyectoDPWA_Citas.Models
             }
         }
 
+        [ValidateNever]
         public String HoraShort
         {
             get
@@ -30,6 +33,7 @@ namespace ProyectoDPWA_Citas.Models
             }
         }
 
+        [ValidateNever]
         public Diagnostico DiagnosticoCurrent
         {
             get
