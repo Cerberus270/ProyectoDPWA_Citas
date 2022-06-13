@@ -61,9 +61,9 @@
                                 <button type="button" class="btn btn-primary btn-detalles" data-id="@item.receta.IdReceta" data-toggle="modal" data-target="#detallesRecetas">
                                     <i class="bi bi-clipboard2-pulse"></i>
                                 </button>
-                                <button type="button" class="btn btn-primary">
+                                <a type="button" class="btn btn-primary" asp-action="Generate" asp-controller="Doctor" asp-route-idReceta="@item.receta.IdReceta">
                                     <i class="bi bi-printer"></i>
-                                </button>
+                                </a>
                             </td>
                         </tr>
                     }
