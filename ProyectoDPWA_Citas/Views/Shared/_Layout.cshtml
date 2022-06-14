@@ -16,11 +16,11 @@
             <div class="container">
                 @if (User.IsInRole("doctor"))
                 {
-                    <a class="navbar-brand" asp-area="" asp-controller="Doctor" asp-action="Index">Clinica XYZ</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Clinica XYZ</a>
                 }
                 @if (User.IsInRole("secretaria"))
                 {
-                    <a class="navbar-brand" asp-area="" asp-controller="Citas" asp-action="Index">Clinica XYZ</a>
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Clinica XYZ</a>
                 }
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
