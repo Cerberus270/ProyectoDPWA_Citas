@@ -1,11 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
+using FastReport;
+using FastReport.Data;
+using FastReport.Export.PdfSimple;
+using FastReport.Web;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using ProyectoDPWA_Citas.Data;
 using ProyectoDPWA_Citas.Models;
 
@@ -15,11 +23,15 @@ namespace ProyectoDPWA_Citas.Controllers
     public class PacienteController : Controller
     {
         private readonly ClinicaModContext _context;
-
-        public PacienteController(ClinicaModContext context)
+        private readonly IWebHostEnvironment _env;
+        private readonly IConfiguration _configuration;
+        public PacienteController(ClinicaModContext context, IWebHostEnvironment env, IConfiguration configuration)
         {
             _context = context;
+            _env = env;
+            _configuration = configuration;
         }
+
 
         // GET: Pacientes
         public async Task<IActionResult> Index()
@@ -151,5 +163,51 @@ namespace ProyectoDPWA_Citas.Controllers
         {
             return _context.Pacientes.Any(e => e.IdPaciente == id);
         }
+        public IActionResult DetallesPacientes(string idPaciente)
+        {
+            var detallesPacientes = _context.Pacientes.Where(c => c.IdPaciente.Equals(int.Parse(idPaciente)));
+            TempData["idPaciente"] = idPaciente;
+            return PartialView("DetallesPacientes", detallesPacientes.ToList());
+        }
+
+        [HttpGet("idPaciente")]
+        public IActionResult Generate()
+        {
+            var webReport = new WebReport();
+            var mssqlDataConnection = new MsSqlDataConnection();
+            mssqlDataConnection.ConnectionString = _configuration.GetConnectionString("Connection");
+            webReport.Report.Dictionary.Connections.Add(mssqlDataConnection);
+            webReport.Report.Load(Path.Combine(_env.ContentRootPath, "Reports", "ReportePaciente.frx"));
+            var paciente = GetTable<Paciente>(_context.Pacientes, "Pacientes");
+            webReport.Report.RegisterData(paciente, "Pacientes");
+            webReport.Report.Prepare();
+            Stream stream = new MemoryStream();
+            webReport.Report.Export(new PDFSimpleExport(), stream);
+            stream.Position = 0;
+            // return stream in browser
+            return File(stream, "application/zip", "reportePacientes.pdf");
+        }
+        static DataTable GetTable<TEntity>(IEnumerable<TEntity> table, string name) where TEntity : class
+        {
+            var offset = 78;
+            DataTable result = new DataTable(name);
+            PropertyInfo[] infos = typeof(TEntity).GetProperties();
+            foreach (PropertyInfo info in infos)
+            {
+                if (info.PropertyType.IsGenericType
+                && info.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    result.Columns.Add(new DataColumn(info.Name, Nullable.GetUnderlyingType(info.PropertyType)));
+                }
+                else
+                {
+                    result.Columns.Add(new DataColumn(info.Name, info.PropertyType));
+                }
+            }
+            
+
+            return result;
+        }
+
     }
 }

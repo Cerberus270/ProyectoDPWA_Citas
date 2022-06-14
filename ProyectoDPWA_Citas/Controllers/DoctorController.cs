@@ -120,7 +120,7 @@ namespace ProyectoDPWA_Citas.Controllers
                 rep.Export(pdfExport, ms);
                 rep.Dispose();
                 ms.Position = 0;
-                return File(ms, "application/pdf", "reporte.pdf");
+                return File(ms, "application/pdf", "reporteReceta.pdf");
             }
             else
             {

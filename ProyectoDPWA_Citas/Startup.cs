@@ -1,7 +1,9 @@
+using FastReport.Data;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,7 +40,10 @@ namespace ProyectoDPWA_Citas
                     options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(
                         _ => "Este valor es requerido");
                 });
+
+            FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
             services.AddDbContext<ClinicaModContext>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -58,6 +63,8 @@ namespace ProyectoDPWA_Citas
             app.UseStatusCodePagesWithRedirects("/Errores/Http?statusCode={0}");
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+
+            app.UseFastReport();
 
             app.UseRouting();
 

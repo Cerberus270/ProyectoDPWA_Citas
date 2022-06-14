@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/13/2022 19:14:00" ReportInfo.Modified="06/13/2022 23:42:32" ReportInfo.CreatorVersion="2019.4.0.0">
+  <Styles Name="Blue">
+    <Style Name="Title" Font="Arial, 12pt, style=Bold"/>
+    <Style Name="Header" Fill.Color="LightSkyBlue" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Group" Font="Arial, 10pt, style=Bold"/>
+    <Style Name="Data" Font="Arial, 10pt"/>
+    <Style Name="Footer" Fill.Color="LightSkyBlue" Font="Arial, 10pt"/>
+    <Style Name="EvenRows" Fill.Color="AliceBlue" Font="Arial, 10pt"/>
+  </Styles>
+  <Dictionary>
+    <MsSqlDataConnection Name="Connection" ConnectionString="rijcmlqM7gJFg/iaLrqMhRfGy5lGlXY8lVBdKwP2D8HXdXlXdPpbG68QL1iYKsyHIavp7MwSGPUd9R/qF+9T2MTAy20qtmGe6TLkafEUkMlSyi2XLXFmQDz1dStF+iOuXqdg18l6EFaTAXjvQwbD9iwfHimHg/JypJuerWsdrKlZ+EEqCRFWmIXKxnnrIfT+Rik90PJ49oq+7VNZDqrax3sMFo2Zw==">
+      <TableDataSource Name="Paciente" DataType="System.Int32" Enabled="true" TableName="Paciente">
+        <Column Name="idPaciente" DataType="System.Int32"/>
+        <Column Name="nombres" DataType="System.String"/>
+        <Column Name="apellidos" DataType="System.String"/>
+        <Column Name="fechaNacimiento" DataType="System.DateTime"/>
+        <Column Name="edad" DataType="System.Int32"/>
+        <Column Name="direccion" DataType="System.String"/>
+        <Column Name="telefono" DataType="System.String"/>
+      </TableDataSource>
+    </MsSqlDataConnection>
+  </Dictionary>
+  <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="37.8">
+      <TextObject Name="Text1" Width="718.2" Height="37.8" Dock="Fill" Text="Pacientes" HorzAlign="Center" VertAlign="Center" Font="Arial, 12pt, style=Bold" Style="Title"/>
+    </ReportTitleBand>
+    <DataBand Name="Data1" Top="41.8" Width="718.2" Height="122.85" DataSource="Paciente">
+      <TextObject Name="Text2" Left="113.4" Width="85.05" Height="18.9" Fill.Color="LightSkyBlue" Text="idPaciente" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text3" Left="226.8" Width="633.15" Height="18.9" Text="[Paciente.idPaciente]" Font="Arial, 11pt, style=Italic"/>
+      <TextObject Name="Text4" Left="113.4" Top="18.9" Width="85.05" Height="18.9" Fill.Color="LightSkyBlue" Text="Nombres" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text5" Left="226.8" Top="18.9" Width="633.15" Height="18.9" Text="[Paciente.nombres]" Font="Arial, 11pt, style=Italic"/>
+      <TextObject Name="Text6" Left="113.4" Top="37.8" Width="85.05" Height="18.9" Fill.Color="LightSkyBlue" Text="Apellidos" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text7" Left="226.8" Top="37.8" Width="633.15" Height="18.9" Text="[Paciente.apellidos]" Font="Arial, 11pt, style=Italic"/>
+      <TextObject Name="Text8" Left="113.4" Top="56.7" Width="85.05" Height="18.9" Fill.Color="LightSkyBlue" Text="Edad" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text9" Left="226.8" Top="56.7" Width="633.15" Height="18.9" Text="[Paciente.edad]" Font="Arial, 11pt, style=Italic"/>
+      <TextObject Name="Text10" Left="113.4" Top="75.6" Width="85.05" Height="18.9" Fill.Color="LightSkyBlue" Text="Direccion" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text11" Left="226.8" Top="75.6" Width="633.15" Height="18.9" Text="[Paciente.direccion]" Format="Custom" Format.Format="G" Font="Arial, 11pt, style=Italic"/>
+      <TextObject Name="Text12" Left="113.4" Top="94.5" Width="85.05" Height="18.9" Fill.Color="LightSkyBlue" Text="Telefono" Font="Arial, 12pt, style=Bold"/>
+      <TextObject Name="Text13" Left="226.8" Top="94.5" Width="633.15" Height="18.9" Text="[Paciente.telefono]" Font="Arial, 11pt, style=Italic"/>
+    </DataBand>
+    <PageFooterBand Name="PageFooter1" Top="168.65" Width="718.2" Height="18.9">
+      <TextObject Name="Text14" Width="718.2" Height="18.9" Dock="Fill" Fill.Color="LightSkyBlue" Text="[PageN]" HorzAlign="Right" Font="Arial, 10pt" Style="Footer"/>
+    </PageFooterBand>
+  </ReportPage>
+</Report>
