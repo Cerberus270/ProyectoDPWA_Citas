@@ -15,7 +15,7 @@ namespace ProyectoDPWA_Citas.Controllers
         #region"Funciones para cumplir cita"
         private bool isCitaEjecutada(CIta cita)
         {
-            return cita.Estado.Equals("Completada") ||
+            return cita.Estado.Equals("Cancelada") ||
                 cita.Estado.Equals("Finalizada") ? false: true;
         }
         public async Task<IActionResult> Cita_Execution_Oppenning(int citaId)
@@ -32,7 +32,7 @@ namespace ProyectoDPWA_Citas.Controllers
             /*IEnumerable<SelectListItem> estadosCita = new List<SelectListItem>() {
                 new SelectListItem("Pendiente", "Pendiente"),
                 new SelectListItem("Confirmada", "Confirmada"),
-                new SelectListItem("Completada", "Completada"),
+                NO -> new SelectListItem("Completada", "Completada"),
                 new SelectListItem("Finalizada", "Finalizada")
             };*/
 
@@ -81,7 +81,7 @@ namespace ProyectoDPWA_Citas.Controllers
                     workingReceta.DetallesReceta.Add(dr);
                     //_context.Add(dr);
                 }
-                workingCita.Estado = "Completada";
+                workingCita.Estado = "Finalizada";
                 await _context.SaveChangesAsync();
 
                 await _context.Database.CommitTransactionAsync();
