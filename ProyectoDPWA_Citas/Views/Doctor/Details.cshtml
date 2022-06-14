@@ -45,7 +45,6 @@
     </dl>
 </div>
 <div>
-    @Html.ActionLink("Iniciar cita", "Cita_Execution_Oppenning", new { citaId=Model.IdCita}, new { @class= "btn btn-outline-info" });
-    <a asp-action="IniciarCita" class="btn btn-outline-info" asp-route-id="@Model.IdCita">Iniciar Cita</a> |
+    @Html.ActionLink("Iniciar cita", "Cita_Execution_Oppenning", new { citaId=Model.IdCita}, new { @class= "btn btn-outline-info" }) |
     <a asp-action="Index" class=""><i class="bi bi-chevron-left"></i> Regresar a la lista</a>
 </div>

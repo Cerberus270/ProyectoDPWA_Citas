@@ -174,10 +174,8 @@ namespace ProyectoDPWA_Citas.Controllers
         public IActionResult Generate()
         {
             var webReport = new WebReport();
-            var mssqlDataConnection = new MsSqlDataConnection();
-            mssqlDataConnection.ConnectionString = _configuration.GetConnectionString("Connection");
-            webReport.Report.Dictionary.Connections.Add(mssqlDataConnection);
             webReport.Report.Load(Path.Combine(_env.ContentRootPath, "Reports", "ReportePaciente.frx"));
+            webReport.Report.Dictionary.Connections[0].ConnectionString = _configuration.GetConnectionString("Connection");
             var paciente = GetTable<Paciente>(_context.Pacientes, "Pacientes");
             webReport.Report.RegisterData(paciente, "Pacientes");
             webReport.Report.Prepare();

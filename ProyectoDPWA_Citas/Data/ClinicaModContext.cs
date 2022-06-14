@@ -2,21 +2,19 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using ProyectoDPWA_Citas.Models;
-
+using Microsoft.Extensions.Configuration;
 #nullable disable
 
 namespace ProyectoDPWA_Citas.Data
 {
     public partial class ClinicaModContext : DbContext
     {
-        public ClinicaModContext(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseLazyLoadingProxies();
-        }
+        private IConfiguration Configuration { get; set; }
 
-        public ClinicaModContext(DbContextOptions<ClinicaModContext> options)
+        public ClinicaModContext(DbContextOptions<ClinicaModContext> options, IConfiguration configuration)
             : base(options)
         {
+            this.Configuration = configuration;
         }
 
         public virtual DbSet<CIta> Cita { get; set; }
@@ -31,7 +29,7 @@ namespace ProyectoDPWA_Citas.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Data Source=(local);initial catalog=ClinicaMod; trusted_connection=yes;");
+                optionsBuilder.UseSqlServer(this.Configuration.GetConnectionString("Connection"));
             }
 
             optionsBuilder.UseLazyLoadingProxies();
