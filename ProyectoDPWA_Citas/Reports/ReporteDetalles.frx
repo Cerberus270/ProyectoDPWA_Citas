@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Report ScriptLanguage="CSharp" ReportInfo.Created="06/04/2022 12:15:15" ReportInfo.Modified="06/13/2022 12:33:03" ReportInfo.CreatorVersion="2022.2.0.0">
+<Report ScriptLanguage="CSharp" ReportInfo.Created="06/04/2022 12:15:15" ReportInfo.Modified="06/14/2022 16:54:15" ReportInfo.CreatorVersion="2022.2.0.0">
   <Dictionary>
     <BusinessObjectDataSource Name="DetallesReceta" ReferenceName="ReporteDetalleRef" DataType="null" Enabled="true">
       <Column Name="IdDetalleReceta" DataType="System.String"/>
@@ -8,27 +8,29 @@
       <Column Name="Indicaciones" DataType="System.String"/>
     </BusinessObjectDataSource>
     <Parameter Name="param1" DataType="System.String"/>
+    <Parameter Name="param2" DataType="System.String"/>
   </Dictionary>
   <ReportPage Name="Page1" Watermark.Font="Arial, 60pt">
-    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="94.5">
+    <ReportTitleBand Name="ReportTitle1" Width="718.2" Height="170.1">
       <TextObject Name="Text1" Left="274.05" Top="9.45" Width="226.8" Height="18.9" Text="REPORTE DETALLES RECETAS" Font="Arial, 10pt, style=Bold"/>
       <TextObject Name="Text10" Left="661.5" Top="9.45" Width="94.5" Height="18.9" IsIntersectedWithOtherObject="true" Text="[Date]" Font="Arial, 10pt"/>
       <TextObject Name="Text12" Left="18.9" Top="37.8" Width="680.4" Height="47.25" Text="[param1]" Font="Arial, 10pt"/>
+      <TextObject Name="Text13" Left="18.9" Top="103.95" Width="680.4" Height="56.7" Text="[param2]" Font="Arial, 10pt"/>
     </ReportTitleBand>
-    <PageHeaderBand Name="PageHeader1" Top="98.5" Width="718.2" Height="47.25">
+    <PageHeaderBand Name="PageHeader1" Top="174.1" Width="718.2" Height="47.25">
       <TextObject Name="Text3" Left="28.35" Width="94.5" Height="18.9" Text="IdDetalleReceta" Font="Arial, 10pt"/>
       <TextObject Name="Text5" Left="141.75" Width="94.5" Height="18.9" Text="IdReceta" Font="Arial, 10pt"/>
       <TextObject Name="Text7" Left="292.95" Width="94.5" Height="18.9" Text="Medicamento" Font="Arial, 10pt"/>
       <TextObject Name="Text9" Left="557.55" Width="94.5" Height="18.9" Text="Indicaciones" Font="Arial, 10pt"/>
     </PageHeaderBand>
-    <DataBand Name="Data1" Top="149.75" Width="718.2" Height="18.9" CanGrow="true" DataSource="DetallesReceta">
+    <DataBand Name="Data1" Top="225.35" Width="718.2" Height="18.9" CanGrow="true" DataSource="DetallesReceta">
       <TextObject Name="Text4" Left="141.75" Width="94.5" Height="18.9" Text="[DetallesReceta.IdReceta]" Font="Arial, 10pt"/>
       <TextObject Name="Text6" Left="255.15" Width="207.9" Height="18.9" CanGrow="true" GrowToBottom="true" Text="[DetallesReceta.Medicamento]" Font="Arial, 10pt"/>
       <TextObject Name="Text8" Left="491.4" Width="207.9" Height="18.9" CanGrow="true" GrowToBottom="true" Text="[DetallesReceta.Indicaciones]" Font="Arial, 10pt" Clip="false"/>
       <TextObject Name="Text2" Left="28.35" Width="94.5" Height="18.9" Text="[DetallesReceta.IdDetalleReceta]" Font="Arial, 10pt" Trimming="Word"/>
       <LineObject Name="Line1" Left="9.45" Top="18.9" Width="699.3"/>
     </DataBand>
-    <PageFooterBand Name="PageFooter1" Top="172.65" Width="718.2" Height="18.9">
+    <PageFooterBand Name="PageFooter1" Top="248.25" Width="718.2" Height="18.9">
       <TextObject Name="Text11" Left="349.65" Width="94.5" Height="18.9" Text="[PageN]" Font="Arial, 10pt"/>
     </PageFooterBand>
   </ReportPage>

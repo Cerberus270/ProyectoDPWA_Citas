@@ -101,14 +101,17 @@ namespace ProyectoDPWA_Citas.Controllers
             string contentRootPath = _env.ContentRootPath;
             FastReport.Utils.Config.WebMode = true;
             var detallesRecetas = _context.DetallesReceta.Where(c => c.IdReceta.Equals(int.Parse(idReceta))).ToList();
+            var diagnostico = _context.Diagnosticos.Where(d => d.IdDiagnostico.Equals(int.Parse(idReceta))).FirstOrDefault();
             Report rep = new Report();
             string path = "";
             path = Path.Combine(contentRootPath, "Reports", "ReporteDetalles.frx");
             //string path = Server.MapPath("~/Reports/ReporteDetalles.frx");
             rep.Load(path);
             string valorParametro = String.Format("Este es un detalle de las recetas dadas al paciente {0} {1}", paciente.Nombres, paciente.Apellidos);
+            string valorParametro2 = String.Format("Diagnostico: {0}", diagnostico.Descripcion);
 
             rep.SetParameterValue("param1", valorParametro);
+            rep.SetParameterValue("param2", valorParametro2);
             rep.RegisterData(detallesRecetas, "ReporteDetalleRef");
             if (rep.Report.Prepare())
             {

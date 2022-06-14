@@ -126,6 +126,8 @@ namespace ProyectoDPWA_Citas.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            List<SelectListItem> nombresCompletos = RetornarNombreCompleto();
+            ViewData["nombres"] = nombresCompletos;
             ViewData["IdPaciente"] = new SelectList(_context.Pacientes, "IdPaciente", "Apellidos", cIta.IdPaciente);
             return View(cIta);
         }
